@@ -1,10 +1,11 @@
 
 import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-
+import Drink from './components/Drinks';
 import React from 'react';
 
 export default function App() {
+  
       return(
         <View style={styles.container}>
           <Text style={styles.changefont}>Tracking</Text>
