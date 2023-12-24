@@ -1,45 +1,58 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-const Drink = () => {
-  const [drinks, setDrinks] = useState([]);
-
-  const addDrink = (drink) => {
-    setDrinks(prevDrinks => [...prevDrinks, drink]);
-  }
-  const removeDrink = (drinkToRemove) => {
-    setDrinks(prevDrinks => prevDrinks.filter(drink => drink !== drinkToRemove));
-  }
-
-  return (
-    <View style={styles.container}>
-      {drinks.map((drink, index) => (
-        <View key={index} style={styles.drinkItem}>
-          <Text style={styles.drinkText}>{drink}</Text>
-          <Button title="Remove" onPress={() => removeDrink(drink)} />
-        </View>
-      ))}
-    </View>
-  );
-}
-
+const Drink = (props) => {
+        let [drink, volume] = props.text.split(' ');
+    
+        if (!volume) {
+            // If there is no volume, consider the entire input as the drink name
+            drink = props.text;
+            volume = ''; // Set volume to an empty string
+        }
+    
+        return (
+                <View style={styles.item}>
+                    <View style={styles.itemLeft}>
+                        <View style={styles.square}></View>
+                        <Text style={styles.itemText}>{drink}</Text>
+                        {!!volume && <Text style={styles.itemText}> {volume}ml</Text>}
+                    </View>
+                    <View style={styles.circular}></View>
+                </View>
+            );
+        };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-  drinkItem: {
+  item: {
+    backgroundColor: '#FFF',
+    padding: 15,
+    borderRadius: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
-    marginVertical: 5,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
-  drinkText: {
-    fontSize: 18,
+  itemLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  square: {
+    width: 24,
+    height: 24,
+    backgroundColor: '#55BCF6',
+    opacity: 0.4,
+    borderRadius: 5,
+    marginRight: 15,
+  },
+  itemText: {
+    maxWidth: '80%',
+  },
+  circular: {
+    width: 12,
+    height: 12,
+    borderColor: '#55BCF6',
+    borderWidth: 2,
+    borderRadius: 5,
   },
 });
 
