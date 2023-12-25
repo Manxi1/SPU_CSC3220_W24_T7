@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, Modal } from 'react-native';
 import Drink from './components/Drinks.js';
+//import
 
 export default function App() {
   const [drinkName, setDrinkName] = useState('');
