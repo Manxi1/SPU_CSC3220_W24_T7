@@ -1,29 +1,45 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Touchable, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Drink = (props) => {
-        let [drink, volume] = props.text.split(' ');
-    
-        if (!volume) {
-            // If there is no volume, consider the entire input as the drink name
-            drink = props.text;
-            volume = ''; // Set volume to an empty string
-        }
-    
-        return (
-                <View style={styles.item}>
-                    <View style={styles.itemLeft}>
-                    <View style={styles.square}>
-                        <Icon name="trash-alt" size={24} color="#000000" />
-                        </View>
-                        <Text style={styles.itemText}>{drink}</Text>
-                        {!!volume && <Text style={styles.itemText}> {volume}ml</Text>}
-                    </View>
-                    <View style={styles.circular}></View>
-                </View>
-            );
-        };
+  let textToSplit = props.text || '';
+  if (typeof textToSplit !== 'string') {
+      textToSplit = String(textToSplit); // Convert to string if not already a string
+  }
+
+  let [drink, volume] = textToSplit.split(' ');
+
+  if (!volume) {
+      drink = textToSplit;
+      volume = '';
+  }
+
+  const handleDeleteItem = () => {
+    handleDelete(props.id); // Call the handleDelete function with the appropriate ID
+  };
+
+
+  return (
+      <View style={styles.item}>
+          <View style={styles.itemLeft}>
+            <TouchableOpacity onPress={() => props.handleDelete(props.id)}>
+              <View style={styles.square}>
+                  <Icon name="trash-alt" size={24} color="#000000" />
+              </View>
+            </TouchableOpacity>
+              <Text style={styles.itemText}>{drink}</Text>
+              {!!volume && <Text style={styles.itemText}> {volume}ml</Text>}
+          </View>
+          <View style={styles.circular}></View>
+      </View>
+  );
+};
+
+
+
+
+
 const styles = StyleSheet.create({
   item: {
     backgroundColor: '#F5F5F5',
