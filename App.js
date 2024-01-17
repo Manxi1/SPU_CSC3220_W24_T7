@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, Modal } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, Modal,Button } from 'react-native';
 import Drink from './components/Drinks.js';
 import { StatusBar } from 'expo-status-bar';
 import * as SQLite from 'expo-sqlite';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function App() {
   const [drinkName, setDrinkName] = useState('');
@@ -10,6 +11,7 @@ export default function App() {
   const [taskItems, setTaskItems] = useState([]);
   const [isAddMode, setIsAddMode] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const db = SQLite.openDatabase('siplogdb.db'); //Database constant
 
   useEffect(() => {
@@ -31,6 +33,10 @@ export default function App() {
       );
     });
   }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Toggle menu visibility
+  };
   // useEffect(() => {
   //   // Create table if not exists
   //   db.transaction(tx => {
@@ -108,6 +114,13 @@ export default function App() {
     setDrinkName('');
     setDrinkVolume('');
     setIsAddMode(false);
+    
+
+    
+  
+    const handleBackButton = () => {
+      setIsMenuOpen(false); // Close the menu
+    };
   
     // Insert the new drink into the database
     const newMessage = newDrink; // Assuming the format is 'Drink Name Volume (ml)'
@@ -180,9 +193,7 @@ export default function App() {
             </View>
           
 
-            <TouchableOpacity onPress={() => console.log('Button pressed')} style={styles.menuButton}>
-          <Text style={styles.menuText}>☰</Text>
-           </TouchableOpacity>
+            
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.roundButton} onPress={() => setIsAddMode(true)}>
               <Text style={styles.buttonText}>+</Text>
@@ -217,6 +228,39 @@ export default function App() {
             </View>
 
 
+          </Modal>
+
+          <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
+            <Text style={styles.menuText}>☰</Text>
+          </TouchableOpacity>
+
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={isMenuOpen}
+            onRequestClose={toggleMenu}>
+            <View style={styles.menuContainer}>
+              <View style={styles.menuContent}>
+                <TouchableOpacity onPress={toggleMenu} style={styles.backButton}>
+                  <Icon name="arrow-left" size={30} color="#000" />
+                </TouchableOpacity>
+                <View style={styles.MenuItemes}>
+                  
+                  <TouchableOpacity onPress={console.log('clicked')} style={[styles.MenuItemes, { marginBottom: 1 }]}>
+                    <Text style={styles.MenuItemestext}>Home</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={console.log('clicked')} style={[styles.MenuItemes, { flex: 2 ,marginBottom:1}]}>
+                    <Text style={styles.MenuItemestext}>Settings</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={console.log('clicked')} style={[styles.MenuItemes, { flex: 18, marginTop:2}]}>
+                    <Text style={styles.MenuItemestext}>About</Text>
+                  </TouchableOpacity>
+
+                  </View>
+                </View>
+            </View>
+            
           </Modal>
           
         </View>
@@ -273,7 +317,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   DrinkWrapper: {
-    paddingTop: 10,
+    paddingTop: 5,
     paddingHorizontal: 20,
     width: '100%',
     justifyContent: 'center',
@@ -323,5 +367,40 @@ const styles = StyleSheet.create({
     marginBottom: 30,
 
   },
+  menuContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+  menuContent: {
+    backgroundColor: 'lightgrey',
+    padding: 30,
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    width: '50%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  MenuItemes: {
 
+     flex: 2,
+     right: 10,
+     top: 10,
+    
+   },
+   MenuItemestext:{
+    fontFamily: 'Roboto',
+    fontSize:26,
+
+   }
 });
