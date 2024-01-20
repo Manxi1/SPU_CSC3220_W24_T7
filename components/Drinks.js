@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 //hello
+//Hello
 const Drink = (props) => {
   let textToSplit = props.text || '';
   if (typeof textToSplit !== 'string') {
