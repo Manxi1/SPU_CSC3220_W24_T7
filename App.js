@@ -46,6 +46,7 @@ export default function App() {
         (_, { rows }) => {
           const data = rows._array.map(item => ({ id: item.id, content: item.content, volume: item.volume}));
           //setTaskItems(data);
+          console.log('Data fetched from database: ', data);
           setMessages(data);
         },
         (_, error) => {
@@ -78,9 +79,23 @@ export default function App() {
     db.transaction(tx => {
       tx.executeSql(
         'INSERT INTO Messages (content, volume) VALUES (?, ?)',
-        [newDrink, parseInt(drinkVolume)],
+        [drinkName, parseInt(drinkVolume)],
         (_, { insertId }) => {
           console.log('Added to database with ID: ', insertId);
+          
+          // Query to fetch the newly inserted item
+          tx.executeSql(
+            'SELECT * FROM Messages WHERE id = ?',
+            [insertId],
+            (_, { rows: { _array } }) => {
+              const newItem = _array[0];
+              console.log('New drink:', newItem);
+            },
+            (_, error) => {
+              console.log('Error retrieving from database: ', error);
+            }
+          );
+
           fetchMessages(); // Fetch updated messages after adding
         },
         (_, error) => {
@@ -110,6 +125,7 @@ export default function App() {
     let itemsCopy = [...taskItems];
     itemsCopy.splice(index, 1);
     //setTaskItems(itemsCopy);
+    console.log('Items Copy: ', itemsCopy);
     setMessages(itemsCopy);
     const messageId = messages[index]?.id;
     if (messageId) {
