@@ -5,7 +5,7 @@
 2. Weston Hanson
    - Github user: WestonHanson
 3. Caed Osborn-Nienhuis
-   - Github user:
+   - Github user: caedosbornnienhuis
 
 # App Name: SipLog
 
